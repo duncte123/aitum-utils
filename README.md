@@ -1,3 +1,9 @@
+# Aitum utils!
+
+## What is this?
+A cool set of triggers that I feel Aitum needs such as playing a random file from a folder. 
+Please have a look at the [Installation instructions](#installation) to get started.
+
 # aitum-cc
 Aitum's Custom Code Wrapper
 
