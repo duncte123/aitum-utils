@@ -27,7 +27,7 @@ export default class RandomSoundPlayer {
 
   private async actualRun(folder: string, scene?: string, source?: string) {
     const resolvedPath = path.resolve(folder);
-    const sound = await this._getRandomSoundFromFolder(resolvedPath);
+    const sound = this._getRandomSoundFromFolder(resolvedPath);
 
     // battling race conditions :P
     if (scene && source) {
@@ -71,7 +71,7 @@ export default class RandomSoundPlayer {
     await aitum.sleep(durS * 1000);
   }
 
-  async _getRandomSoundFromFolder(folder: string): Promise<string> {
+  _getRandomSoundFromFolder(folder: string): string {
     const files = fs.readdirSync(folder)
       .filter((f) => f !== '.gitignore');
 
