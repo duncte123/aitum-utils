@@ -22,17 +22,22 @@ async function loadActions(lib: AitumCC) {
       const { default: obj } = await import(file);
 
       if (!obj.name) {
-        console.error(`Skipping "${file}": The name is missing`)
+        console.error(`Skipping "${file}": The name is missing`);
         continue;
       }
 
       if (!obj.inputs) {
-        console.error(`Skipping "${file}": The inputs are missing (must have empty object for no inputs)`)
+        console.error(`Skipping "${file}": The inputs are missing (must have empty object for no inputs)`);
         continue;
       }
 
       if (!obj.method) {
-        console.error(`Skipping "${file}": The method is missing`)
+        console.error(`Skipping "${file}": The method is missing`);
+        continue;
+      }
+
+      if (typeof obj.method !== 'function') {
+        console.error(`Skipping "${file}": The method is not a function`);
         continue;
       }
 
