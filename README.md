@@ -10,5 +10,15 @@ You can just drag and drop these into your `src/actions` folder and instantly be
 Given a path to a folder, this action will play a random audio file through Aitum that is located in that folder.<br>
 The path to the folder provided must be the full path.
 
-## StartLoopTrigger.ts & StopLoopTrigger.ts
-This pair is not active yet
+Inputs:
+- Full path to folder with sounds
+  - The folder that the sounds are in. E.G. "C:\Users\duncte\Music\Honks" on windows or "/home/duncte123/honks" on Linux and mac.
+
+## ToggleLoopTrigger.ts
+Allow you to turn on and off rule looping easily (no extra rules/variables required)
+
+Inputs:
+- Run the rule every x seconds
+  - How often per second to trigger the rule
+- Rule name
+  - The name of the rule you want to trigger
