@@ -19,11 +19,13 @@ const queue: QueueItem[] = [];
 
 /*********** CONFIG ***********/
 // The custom code action name
-const name: string = 'Play random sound from folder';
+const name: string = 'Advanced random sound';
 
 // The custom code inputs
 const inputs: ICCActionInputs = {
-  obsName: new StringInput('Name of obs integration', { required: true }),
+  obsName: new StringInput('OBS Name', { required: true }),
+  scene: new StringInput('OBS Scene', { required: true }),
+  source: new StringInput('Icon source', { required: true }),
   path: new StringInput('Full path to folder with sounds', { required: true }),
 };
 
@@ -38,25 +40,43 @@ async function handleItem(item: QueueItem): Promise<void> {
   if (!foundObsDevices.length) {
     throw new Error('OBS device disappeared!?');
   }
+  try {
+    playing = true;
 
-  const obs = foundObsDevices[0];
+    const obs = foundObsDevices[0];
 
-  // Get the path to the folder
-  const folder = path.resolve(item.folder);
+    // Get the path to the folder
+    const folder = path.resolve(item.folder);
 
-  // Look at all files in the folder
-  const audioFiles = fs.readdirSync(folder).filter((f) => f !== '.gitignore');
+    // Look at all files in the folder
+    const audioFiles = fs.readdirSync(folder).filter((f) => f !== '.gitignore');
 
-  // Select a random audio file from the folder
-  const randomFile = path.join(folder, audioFiles[Math.floor(Math.random() * audioFiles.length)]);
+    // Select a random audio file from the folder
+    const randomFile = path.join(folder, audioFiles[Math.floor(Math.random() * audioFiles.length)]);
 
-  const stats = await ffprobe(randomFile, { path: ffprobeStatic.path });
-  const durS = stats.streams[0].duration || 0;
+    const stats = await ffprobe(randomFile, {path: ffprobeStatic.path});
+    const durS = stats.streams[0].duration || 0;
 
-  await obs.changeSceneItemVisibility(item.scene, item.source, true);
-  await aitumDevice.playSound(randomFile, 1.0);
-  await aitumJs.sleep(durS * 1000);
-  await obs.changeSceneItemVisibility(item.scene, item.source, false);
+    await obs.changeSceneItemVisibility(item.scene, item.source, true);
+    await aitumDevice.playSound(randomFile, 1.0);
+    await aitumJs.sleep(durS * 1000);
+    await obs.changeSceneItemVisibility(item.scene, item.source, false);
+  } finally {
+    playing = false;
+
+    // TODO: better way of doing this
+    runNextItemInQueue().catch((e) => {
+      throw e;
+    });
+  }
+}
+
+async function runNextItemInQueue(): Promise<void> {
+  const nextItem = queue.shift();
+
+  if (nextItem) {
+    await handleItem(nextItem);
+  }
 }
 
 // The code executed.
@@ -66,14 +86,19 @@ async function method(inputs: { [key: string]: number | string | boolean | strin
     name: inputs.obsName as string,
   });
 
-  console.log(foundObsDevices);
+  // push to queue
+  queue.push({
+    folder: inputs.path as string,
+    obsHost: foundObsDevices[0].host,
+    scene: inputs.scene as string,
+    source: inputs.source as string,
+  });
 
   if (playing) {
-    // push to queue
     return;
   }
 
-  // TODO: run the thing
+  await runNextItemInQueue();
 }
 
 /*********** DON'T EDIT BELOW ***********/
