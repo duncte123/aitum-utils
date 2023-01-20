@@ -32,8 +32,7 @@ Inputs:
 - Full path to folder with sounds
   - The folder that the sounds are in. E.G. "C:\Users\duncte\Music\Honks" on windows or "/home/duncte123/honks" on Linux and mac.
 
-Video's:
-- TODO: make the videos
+Instruction video: https://www.youtube.com/watch?v=axaa0OXvUso
 
 ## ToggleLoopTrigger.ts
 Allow you to turn on and off rule looping easily (no extra rules/variables required)

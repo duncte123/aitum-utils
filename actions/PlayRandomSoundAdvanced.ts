@@ -12,6 +12,7 @@ type QueueItem = {
   scene: string;
   source: string;
   obsHost: string;
+  obsName: string;
 };
 
 let playing: boolean = false;
@@ -34,7 +35,8 @@ async function handleItem(item: QueueItem): Promise<void> {
   // Get access to the aitum audio player
   const aitumDevice = (await aitumJs.getDevices(DeviceType.AITUM))[0];
   const foundObsDevices = await aitumJs.getDevices(DeviceType.OBSV5, {
-    host: item.obsHost
+    host: item.obsHost,
+    name: item.obsName,
   });
 
   if (!foundObsDevices.length) {
@@ -90,6 +92,7 @@ async function method(inputs: { [key: string]: number | string | boolean | strin
   queue.push({
     folder: inputs.path as string,
     obsHost: foundObsDevices[0].host,
+    obsName: foundObsDevices[0].name,
     scene: inputs.scene as string,
     source: inputs.source as string,
   });
