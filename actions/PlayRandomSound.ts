@@ -17,7 +17,7 @@ const inputs: ICCActionInputs = {
 // The code executed.
 async function method(inputs: { [key: string]: number | string | boolean | string[] }) {
   // Get the path to the folder
-  const folder = path.resolve(inputs.folderPath as string);
+  const folder = path.resolve(inputs.path as string);
 
   // Look at all files in the folder
   const audioFiles = fs.readdirSync(folder).filter((f) => f !== '.gitignore');
