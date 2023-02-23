@@ -34,6 +34,35 @@ Inputs:
 
 Instruction video: https://www.youtube.com/watch?v=axaa0OXvUso
 
+## Subathon countdown
+
+### Files
+This action has two different files, please copy them both over
+- SubathonFormatTime.ts
+- SubathonAddSeconds.ts
+
+### Installation steps
+1. Create 3 global variables (names must match)
+   1. Subathon Counter ->  Whole Number
+   2. Subathon TXT Time -> Text
+   3. Subathon Ticker ->   Switch
+2. Create a rule called "Format time for OBS".
+   - trigger: Global Variable Changed -> Subathon Counter
+   - action: custom code "Subathon: format time"
+     - Set "Seconds variable" to the "Subathon Counter" variable
+3. Create a rule called "Set time in OBS"
+   - trigger: Global Variable Changed -> Subathon TXT Time
+   - action: Set Text Source Properties. Use "Subathon TXT Time" as your text variable
+4. Create a rule called "Subathon Ticker"
+   - trigger: Global Variable Changed -> Subathon Ticker
+   - actions:
+     1. custom code "Subathon: Add seconds", set seconds to "-1"
+     2. "Change Global Variable Value" and flip the "Subathon Ticker" variable with a ***1 second delay***
+5. Now for every time that you want to add seconds (eg subs) you will need to add a new rule that adds the desired amount of seconds with the "Subathon: Add seconds" custom code action.
+
+
+To start the timer manually trigger the "Subathon Ticker" rule. To stop the timer you can disable the rule and all the logic will halt automatically.
+
 ## ToggleLoopTrigger.ts
 Allow you to turn on and off rule looping easily (no extra rules/variables required)
 
