@@ -59,6 +59,7 @@ This action has two different files, please copy them both over
      1. custom code "Subathon: Add seconds", set seconds to "-1"
      2. "Change Global Variable Value" and flip the "Subathon Ticker" variable with a ***1 second delay***
 5. Now for every time that you want to add seconds (eg subs) you will need to add a new rule that adds the desired amount of seconds with the "Subathon: Add seconds" custom code action.
+   You can use the "multiplier" to for example give the amount of $ donated so that $1 = 60 seconds for $20 becomes 1200 seconds added to the timer.
 
 
 To start the timer manually trigger the "Subathon Ticker" rule. To stop the timer you can disable the rule and all the logic will halt automatically.

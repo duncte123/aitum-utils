@@ -1,5 +1,5 @@
 import { ICCActionInputs, ICustomCode } from 'aitum.js/lib/interfaces';
-import { IntInput } from 'aitum.js/lib/inputs';
+import { IntInput, FloatInput } from 'aitum.js/lib/inputs';
 import { AitumCC } from 'aitum.js';
 
 /*********** CONFIG ***********/
@@ -8,10 +8,12 @@ const name: string = 'Subathon: Add seconds';
 
 const inputs: ICCActionInputs = {
   seconds: new IntInput('Seconds to add', { required: true, minValue: -1 }),
+  multiplier: new FloatInput('Multiplier', { required: false, minValue: 1 }),
 }
 
 type InputType = {
   seconds: number;
+  multiplier: number;
 }
 
 async function method(inputs: InputType) {
@@ -26,7 +28,7 @@ async function method(inputs: InputType) {
   }
 
   const curVal = counterVar.value as number;
-  const newVal = curVal + inputs.seconds;
+  const newVal = curVal + Math.floor((inputs.seconds * inputs.multiplier || 1));
 
   if (newVal < 0) {
     return;
