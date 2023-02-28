@@ -23,7 +23,7 @@ async function method(inputs: InputType) {
   const counterVar = vars.find((v) => v.name === 'Subathon TXT Time');
 
   if (!counterVar) {
-    throw new Error('Please create a number variable named "Subathon TXT Time"');
+    throw new Error('Please create a text variable named "Subathon TXT Time"');
   }
 
   const display = new Date(inputs.seconds * 1000).toISOString().substring(11, 19)
