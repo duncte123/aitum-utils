@@ -14,7 +14,6 @@ type InputType = {
   seconds: number;
 }
 
-
 async function method(inputs: InputType) {
   const aitumJS = AitumCC.get().getAitumJS().aitum;
 
@@ -26,7 +25,15 @@ async function method(inputs: InputType) {
     throw new Error('Please create a text variable named "Subathon TXT Time"');
   }
 
-  const display = new Date(inputs.seconds * 1000).toISOString().substring(11, 19)
+  const hours = Math.floor(inputs.seconds / (60 * 60));
+
+  const divisorForMinutes = inputs.seconds % (60 * 60);
+  const minutes = Math.floor(divisorForMinutes / 60);
+
+  const divisorForSeconds = divisorForMinutes % 60;
+  const seconds = Math.ceil(divisorForSeconds);
+
+  const display = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 
   await counterVar.update(display);
 }
