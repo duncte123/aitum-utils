@@ -4,6 +4,8 @@
 This repository contains cool actions for Aitum's custom code module.
 You can just drag and drop these into your `src/actions` folder and instantly be able to use them.
 
+Before using this please make sure that you have set up aitum-cc, instructions are here: https://github.com/Aitum/aitum-cc
+
 # Included actions
 
 ## PlayRandomSound.ts
