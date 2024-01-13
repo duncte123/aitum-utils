@@ -15,6 +15,8 @@ The path to the folder provided must be the full path.
 Inputs:
 - Full path to folder with sounds
   - The folder that the sounds are in. E.G. "C:\Users\duncte\Music\Honks" on windows or "/home/duncte123/honks" on Linux and mac.
+- Volume (optional, defaults to 100%)
+  - The volume of the player, 0% to 100%
 
 ## PlayRandomSoundAdvanced.ts
 Given a path to a folder, this action will play a random audio file through Aitum that is located in that folder.<br>
@@ -33,6 +35,8 @@ Inputs:
   - The name of the source within `OBS Scene` to toggle on while the sound is playing (and off when the sound ends).
 - Full path to folder with sounds
   - The folder that the sounds are in. E.G. "C:\Users\duncte\Music\Honks" on windows or "/home/duncte123/honks" on Linux and mac.
+- Volume (optional, defaults to 100%)
+    - The volume of the player, 0% to 100%
 
 Instruction video: https://www.youtube.com/watch?v=axaa0OXvUso
 

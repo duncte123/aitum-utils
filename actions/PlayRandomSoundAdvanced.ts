@@ -1,5 +1,5 @@
 import { ICCActionInputs, ICustomCode } from 'aitum.js/lib/interfaces';
-import { StringInput } from 'aitum.js/lib/inputs';
+import { IntInput, StringInput } from 'aitum.js/lib/inputs';
 import { AitumCC } from 'aitum.js';
 import { DeviceType } from 'aitum.js/lib/enums';
 import path from 'path';
@@ -13,6 +13,7 @@ type QueueItem = {
   source: string;
   obsHost: string;
   obsName: string;
+  volume?: number;
 };
 
 let playing: boolean = false;
@@ -28,6 +29,7 @@ const inputs: ICCActionInputs = {
   scene: new StringInput('OBS Scene', { required: true }),
   source: new StringInput('Icon source', { required: true }),
   path: new StringInput('Full path to folder with sounds', { required: true }),
+  volume: new IntInput('Volume', { required: false, minValue: 0, maxValue: 100 }),
 };
 
 async function handleItem(item: QueueItem): Promise<void> {
@@ -59,8 +61,11 @@ async function handleItem(item: QueueItem): Promise<void> {
     const stats = await ffprobe(randomFile, {path: ffprobeStatic.path});
     const durS = stats.streams[0].duration || 0;
 
+    const parsedVolume = Math.min(100, Math.max(0, item.volume || 100))
+    const scaledVolume = parsedVolume / 100;
+
     await obs.changeSceneItemVisibility(item.scene, item.source, true);
-    await aitumDevice.playSound(randomFile, 1.0);
+    await aitumDevice.playSound(randomFile, scaledVolume);
     await aitumJs.sleep(durS * 1000);
     await obs.changeSceneItemVisibility(item.scene, item.source, false);
   } finally {
@@ -95,6 +100,7 @@ async function method(inputs: { [key: string]: number | string | boolean | strin
     obsName: foundObsDevices[0].name,
     scene: inputs.scene as string,
     source: inputs.source as string,
+    volume: inputs.volume as number | undefined,
   });
 
   if (playing) {
